@@ -129,6 +129,10 @@ func respondWithImage(ctx context.Context, reqID string, r *http.Request, rw htt
 		gzipData(data, buf)
 		dataToRespond = buf.Bytes()
 	}
+	
+	if (conf.EnableWebpDetection || conf.EnforceWebp) {
+		rw.Header().Set("Vary", "Accept");
+	}
 
 	rw.Header().Set("Content-Length", strconv.Itoa(len(dataToRespond)))
 	rw.WriteHeader(200)
